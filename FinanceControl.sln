@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceControl", "FinanceControl\FinanceControl.csproj", "{FEEBA91B-4B9F-4511-8958-734F761226F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEEBA91B-4B9F-4511-8958-734F761226F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEEBA91B-4B9F-4511-8958-734F761226F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEEBA91B-4B9F-4511-8958-734F761226F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEEBA91B-4B9F-4511-8958-734F761226F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
