@@ -2,7 +2,6 @@ using FinanceControl.Database;
 using FinanceControl.Extensions;
 using FinanceControl.Mediatr.PaymentRequests;
 using FinanceControl.Services;
-using FinanceControl.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +31,7 @@ builder.Services.AddCors(options =>
     });
     options.AddPolicy("Production", policy =>
     {
-        policy.WithOrigins("");
+        policy.WithOrigins(""); // TODO Configure cors
     });
 });
 builder.Services.AddHostedService<DailyUpdateService>();

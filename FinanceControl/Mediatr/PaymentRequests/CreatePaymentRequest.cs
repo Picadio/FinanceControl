@@ -30,6 +30,9 @@ public class CreatePaymentRequest : IRequest<IActionResult>
     [JsonIgnore]
     [BindNever]
     public Guid UserId { get; set; }
+    [JsonIgnore]
+    [BindNever]
+    public string? Check { get; set; }
     
     public class CreatePaymentRequestHandler : IRequestHandler<CreatePaymentRequest, IActionResult>
     {

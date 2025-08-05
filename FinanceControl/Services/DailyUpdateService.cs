@@ -47,19 +47,30 @@ public class DailyUpdateService : BackgroundService
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var now = DateTime.Now;
+            var users = new HashSet<User>();
+            
             var receipts = await dbContext.Receipts
                 .Include(receipt => receipt.User)
                 .Where(receipt => receipt.Day == now.Day)
                 .ToListAsync();
-        
-            var users = new HashSet<User>();
             foreach (var receipt in receipts)
             {
                 var user = receipt.User;
                 user.Balance += receipt.Sum;
                 users.Add(user);
             }
-        
+            
+            var payments = await dbContext.Payments
+                .Include(payment => payment.User)
+                .Where(payment => payment.MonthlyPayDay == now.Day)
+                .ToListAsync();
+            foreach (var payment in payments)
+            {
+                var user = payment.User;
+                user.Balance -= payment.Sum;
+                users.Add(user);
+            }
+            
             dbContext.Users.UpdateRange(users);
             await dbContext.SaveChangesAsync();
         }

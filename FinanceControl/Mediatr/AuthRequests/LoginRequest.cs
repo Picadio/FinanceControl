@@ -61,7 +61,7 @@ public class LoginRequest : IRequest<IActionResult>
                     signingCredentials: creds
                 );
 
-                return HttpUtil.SuccessResponse(new JwtSecurityTokenHandler().WriteToken(token));
+                return HttpUtil.SuccessResponse(new {Token = new JwtSecurityTokenHandler().WriteToken(token)});
             }
 
             return HttpUtil.GetResponse(HttpStatusCode.Unauthorized, "Incorrect credentials");

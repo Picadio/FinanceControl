@@ -14,7 +14,7 @@ public class Payment : BaseEntity
     [Range(0, double.MaxValue)]
     public double Sum { get; set; }
     public DateTime DateTime { get; set; }
-    public DateOnly? MonthlyPayDate { get; set; }
+    public int? MonthlyPayDay { get; set; }
     public string? WhoShouldReturn { get; set; }
     public string? Check { get; set; }
     

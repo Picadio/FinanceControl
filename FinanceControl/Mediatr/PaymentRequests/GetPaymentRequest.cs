@@ -54,11 +54,22 @@ public class GetPaymentRequest : IRequest<IActionResult>
             
             var payments = await _dbContext.Payments
                 .Where(payment => payment.UserId == request.UserId)
-                .Where(payment => payment.Id == request.Id || request.Id == null)
+                .OrderByDescending(payment => payment.DateTime)
                 .Skip(request.Offset)
                 .Take(request.Limit)
                 .ToListAsync(cancellationToken: cancellationToken);
-            return HttpUtil.SuccessResponse(payments);
+
+            var total = await _dbContext.Payments
+                .Where(payment => payment.UserId == request.UserId)
+                .CountAsync(cancellationToken: cancellationToken);
+            
+            return HttpUtil.SuccessResponse(new
+            {
+                Payments = payments,
+                Total = total,
+                Limit = request.Limit,
+                Offset = request.Offset
+            });
         }
     }
 }

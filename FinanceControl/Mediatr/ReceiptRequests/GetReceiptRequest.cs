@@ -55,14 +55,23 @@ public class GetReceiptRequest : IRequest<IActionResult>
                 }
                 return HttpUtil.SuccessResponse(receipt);
             }
-          
+
+            var total = await _dbContext.Receipts
+                .Where(receipt => receipt.UserId == request.UserId).CountAsync(cancellationToken: cancellationToken);
+            
             var receipts = await _dbContext.Receipts
-                .Where(payment => payment.UserId == request.UserId)
-                .Where(payment => payment.Id == request.Id)
+                .Where(receipt => receipt.UserId == request.UserId)
                 .Skip(request.Offset)
                 .Take(request.Limit)
                 .ToListAsync(cancellationToken: cancellationToken);
-            return HttpUtil.SuccessResponse(receipts);
+            receipts.Reverse();
+            return HttpUtil.SuccessResponse(new
+            {
+                Receipt = receipts,
+                Total = total,
+                Limit = request.Limit,
+                Offset = request.Offset
+            });
         }
     }
 }

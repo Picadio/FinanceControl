@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -51,13 +52,14 @@ public class CreatePaymentByCheckRequest : IRequest<IActionResult>
             {
                 return HttpUtil.GetResponse(HttpStatusCode.Unauthorized);
             }
-            
             var response = await _httpClient.GetAsync(HttpUtil.GetUrlApiTaxGovUa(request.Sum, request.Date, request.Fn, request.Id), cancellationToken);
+            response = await _httpClient.GetAsync(
+                "https://cabinet.tax.gov.ua/ws/api_public/rro/chkAllWeb?fn=3001056162&sm=233.80&date=2025-06-26%2017:18:00&id=7800148&type=3");
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 _logger.LogWarning(content);
-                return HttpUtil.GetResponse(response.StatusCode, "Error from tax gov ua api");
+                return HttpUtil.GetResponse(HttpStatusCode.BadGateway, "Error from tax gov ua api");
             }
             
             var json = JObject.Parse(content);
@@ -71,7 +73,8 @@ public class CreatePaymentByCheckRequest : IRequest<IActionResult>
                 DateTime = request.Date,
                 MonthlyPayDate = null,
                 Name = "Чек " + request.Id,
-                Description = decodedCheck,
+                Check = decodedCheck,
+                Description = null,
                 Sum = request.Sum,
                 UserId = request.UserId,
                 WhoShouldReturn = null

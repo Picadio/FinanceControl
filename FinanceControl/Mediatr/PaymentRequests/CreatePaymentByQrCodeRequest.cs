@@ -36,9 +36,9 @@ public class CreatePaymentByQrCodeRequest : IRequest<IActionResult>
             var result = QrUtil.Decode(request.File);
             if (result == null)
             {
-                return HttpUtil.GetResponse(HttpStatusCode.BadRequest, "Qr code not found");
+                return HttpUtil.GetResponse(HttpStatusCode.UnprocessableEntity, "Qr code not found on image");
             }
-          
+            _logger.LogInformation(result);
             var newRequest = new CreatePaymentByUrlRequest()
             {
                 UserId = request.UserId,
